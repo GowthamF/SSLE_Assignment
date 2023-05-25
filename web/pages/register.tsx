@@ -1,8 +1,14 @@
 import clsx from "clsx";
+import api from "~/lib/api";
+import useAuthStore from "~/hooks/useAuthStore.hook";
+import Head from "next/head";
 import type { FC } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { login } from "~/services/user";
 
 const RegisterSchema = z.object({
   email: z.string().email(),
@@ -13,20 +19,51 @@ const RegisterSchema = z.object({
 type RegisterInput = z.infer<typeof RegisterSchema>;
 
 const RegisterPage: FC = () => {
+  const router = useRouter();
+  const { setUser } = useAuthStore((state) => state.actions);
+
+  const registerMutation = useMutation({
+    mutationFn: async (formData: RegisterInput) => {
+      const registerResponse = await api.post<boolean>("/Account/Register", {
+        id: 0,
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        password: formData.password,
+        profileImage:
+          "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
+        phoneNumber: "01234567890",
+      });
+
+      if (registerResponse.data === true) {
+        return await login(formData.email, formData.password);
+      } else {
+        throw new Error("Error registering user");
+      }
+    },
+    onSuccess: (data) => {
+      setUser(data.token, data.userId, data.roles);
+      router.replace("/");
+    },
+  });
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<RegisterInput>({
     resolver: zodResolver(RegisterSchema),
   });
-  const onSubmit: SubmitHandler<RegisterInput> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<RegisterInput> = async (data) => {
+    await registerMutation.mutateAsync(data);
   };
 
   return (
     <div>
+      <Head>
+        <title>Register</title>
+      </Head>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-4"
@@ -43,6 +80,7 @@ const RegisterPage: FC = () => {
               "input-bordered input w-full max-w-xs",
               errors.email ? "input-error" : null
             )}
+            disabled={registerMutation.isLoading}
           />
 
           {!!errors?.email && (
@@ -66,6 +104,7 @@ const RegisterPage: FC = () => {
               "input-bordered input w-full max-w-xs",
               errors.firstName ? "input-error" : null
             )}
+            disabled={registerMutation.isLoading}
           />
 
           {!!errors?.firstName && (
@@ -89,6 +128,7 @@ const RegisterPage: FC = () => {
               "input-bordered input w-full max-w-xs",
               errors.lastName ? "input-error" : null
             )}
+            disabled={registerMutation.isLoading}
           />
 
           {!!errors?.lastName && (
@@ -112,6 +152,7 @@ const RegisterPage: FC = () => {
               "input-bordered input w-full max-w-xs",
               errors.password ? "input-error" : null
             )}
+            disabled={registerMutation.isLoading}
           />
 
           {!!errors?.password && (
@@ -123,7 +164,11 @@ const RegisterPage: FC = () => {
           )}
         </div>
 
-        <button type="submit" className="btn">
+        <button
+          type="submit"
+          className={clsx("btn", registerMutation.isLoading ? "loading" : null)}
+          disabled={registerMutation.isLoading}
+        >
           Register
         </button>
       </form>
