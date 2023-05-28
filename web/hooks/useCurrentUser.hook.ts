@@ -18,6 +18,7 @@ const useCurrentUser = () => {
 
       return response.data;
     },
+    enabled: isAuth,
   });
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import type { NextApiHandler } from "next";
-import type { User } from "~/prisma";
 import { parseCookies } from "nookies";
 import { SECRET } from "~/lib/constants";
 
