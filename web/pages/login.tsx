@@ -1,30 +1,29 @@
 import clsx from "clsx";
+import api from "~/lib/api";
 import useAuthStore from "~/hooks/useAuthStore.hook";
 import Head from "next/head";
 import type { FC } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { login } from "~/services/user";
-
-const LoginSchema = z.object({
-  username: z.string().email(),
-  password: z.string().min(5, { message: "Required" }),
-});
-type LoginInput = z.infer<typeof LoginSchema>;
+import { LoginSchema, type LoginInput } from "~/lib/schema";
 
 const LoginPage: FC = () => {
   const router = useRouter();
-  const { setUser } = useAuthStore((state) => state.actions);
+  const { setIsAuth } = useAuthStore((state) => state.actions);
 
   const loginMutation = useMutation({
     mutationFn: async (formData: LoginInput) => {
-      return await login(formData.username, formData.password);
+      const loginResponse = await api.post<boolean>("/auth/login", {
+        username: formData.username,
+        password: formData.password,
+      });
+
+      return loginResponse.data;
     },
-    onSuccess: (data) => {
-      setUser(data.token, data.userId, data.roles);
+    onSuccess: () => {
+      setIsAuth(true);
       router.replace("/");
     },
   });

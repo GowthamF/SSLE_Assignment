@@ -3,46 +3,29 @@ import api from "~/lib/api";
 import useAuthStore from "~/hooks/useAuthStore.hook";
 import Head from "next/head";
 import type { FC } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { login } from "~/services/user";
-
-const RegisterSchema = z.object({
-  email: z.string().email(),
-  firstName: z.string().min(5, { message: "Required" }),
-  lastName: z.string().min(5, { message: "Required" }),
-  password: z.string().min(5, { message: "Required" }),
-});
-type RegisterInput = z.infer<typeof RegisterSchema>;
+import { RegisterSchema, type RegisterInput } from "~/lib/schema";
 
 const RegisterPage: FC = () => {
   const router = useRouter();
-  const { setUser } = useAuthStore((state) => state.actions);
+  const { setIsAuth } = useAuthStore((state) => state.actions);
 
   const registerMutation = useMutation({
     mutationFn: async (formData: RegisterInput) => {
-      const registerResponse = await api.post<boolean>("/Account/Register", {
-        id: 0,
+      const registerResponse = await api.post<boolean>("/auth/register", {
         email: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
         password: formData.password,
-        profileImage:
-          "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
-        phoneNumber: "01234567890",
       });
 
-      if (registerResponse.data === true) {
-        return await login(formData.email, formData.password);
-      } else {
-        throw new Error("Error registering user");
-      }
+      return registerResponse.data;
     },
-    onSuccess: (data) => {
-      setUser(data.token, data.userId, data.roles);
+    onSuccess: () => {
+      setIsAuth(true);
       router.replace("/");
     },
   });

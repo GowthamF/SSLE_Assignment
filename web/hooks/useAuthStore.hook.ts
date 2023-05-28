@@ -1,31 +1,19 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface AuthState {
-  token?: string;
-  userId?: number;
-  roles?: string[];
+  isAuth: boolean;
 
   actions: {
-    setUser: (token: string, userId: number, roles: string[]) => void;
+    setIsAuth: (isAuth: boolean) => void;
   };
 }
 
-const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      token: undefined,
-      userId: undefined,
-      roles: undefined,
+const useAuthStore = create<AuthState>()((set) => ({
+  isAuth: true,
 
-      actions: {
-        setUser: (token, userId, roles) => set({ token, userId, roles }),
-      },
-    }),
-    {
-      name: "auth-storage",
-    }
-  )
-);
+  actions: {
+    setIsAuth: (isAuth) => set({ isAuth }),
+  },
+}));
 
 export default useAuthStore;
