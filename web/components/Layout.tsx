@@ -1,13 +1,22 @@
 import Link from "next/link";
 import useCurrentUser from "~/hooks/useCurrentUser.hook";
+import useToken from "~/hooks/useToken.hook";
 import type { FC, ReactNode } from "react";
+import { useRouter } from "next/router";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const router = useRouter();
   const { data } = useCurrentUser();
+  const [_token, _setToken, removeToken] = useToken();
+
+  const logout = () => {
+    removeToken();
+    router.replace("/");
+  };
 
   return (
     <>
@@ -35,9 +44,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             )}
           </ul>
 
+          <span className="flex-1" />
+
           {data?.roles?.includes("User") && (
             <Link href="/posts/create">Create Post</Link>
           )}
+
+          {!!data && <button onClick={logout}>Logout</button>}
         </nav>
 
         <hr className="my-2" />
