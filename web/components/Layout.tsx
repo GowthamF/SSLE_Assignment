@@ -32,7 +32,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
             )}
           </ul>
         </nav>
+
+        <hr className="my-2" />
       </header>
+
       <main className="container p-4">{children}</main>
     </>
   );

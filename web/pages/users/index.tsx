@@ -47,7 +47,12 @@ const UsersPage: FC = () => {
             {data?.map((item) => (
               <tr key={item.id}>
                 <td>
-                  <Link href={`/users/${item.id}`} className="underline underline-offset-4">{item.id}</Link>
+                  <Link
+                    href={`/users/${item.id}`}
+                    className="underline underline-offset-4"
+                  >
+                    {item.id}
+                  </Link>
                 </td>
                 <td>{item.firstName}</td>
                 <td>{item.lastName}</td>
