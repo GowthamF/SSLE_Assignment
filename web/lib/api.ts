@@ -5,7 +5,7 @@ export const localApi = axios.create({
 });
 
 export const externalApi = axios.create({
-  baseURL: "http://13.210.13.61/api",
+  baseURL: "http://13.211.128.222/api",
 });
 
 export default localApi;

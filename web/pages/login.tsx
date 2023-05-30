@@ -18,9 +18,7 @@ const LoginPage: FC = () => {
       return await login(formData.username, formData.password);
     },
     onSuccess: (data) => {
-      setToken(data.token, {
-        days: 7,
-      });
+      setToken(data.token);
       router.replace("/");
     },
   });

@@ -38,9 +38,7 @@ const RegisterPage: FC = () => {
       }
     },
     onSuccess: (data) => {
-      setToken(data.token, {
-        days: 7,
-      });
+      setToken(data.token);
       router.replace("/");
     },
   });
