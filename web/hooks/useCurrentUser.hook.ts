@@ -18,7 +18,7 @@ const useCurrentUser = () => {
     if (query.isError) {
       removeToken();
     }
-  }, [query.isError,removeToken]);
+  }, [query.isError, removeToken]);
 
   return query;
 };
