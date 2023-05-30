@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import usePosts from "~/hooks/usePosts.hook";
 import Head from "next/head";
 import type { FC } from "react";
 import type { Post } from "~/prisma";
@@ -12,6 +13,8 @@ import { localApi } from "~/lib/api";
 const CreatePost: FC = () => {
   const router = useRouter();
 
+  const { refetch } = usePosts();
+
   const savePostMutation = useMutation({
     mutationFn: async (formData: PostInput) => {
       const response = await localApi.post<Post>("/posts", formData);
@@ -19,6 +22,7 @@ const CreatePost: FC = () => {
       return response.data;
     },
     onSuccess: (data) => {
+      refetch();
       router.replace(`/posts/${data.id}`);
     },
   });

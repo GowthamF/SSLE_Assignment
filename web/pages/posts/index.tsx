@@ -25,37 +25,42 @@ const UserDisplay: FC<{ id: number }> = ({ id }) => {
   );
 };
 
-const DeletePostButton: FC<{id:string}> = ({id}) => {
+const DeletePostButton: FC<{ id: string }> = ({ id }) => {
   const { refetch } = usePosts();
 
   const deletePostMutation = useMutation({
-    mutationKey: ['post', id, 'delete'],
+    mutationKey: ["post", id, "delete"],
     mutationFn: async () => {
-      const response = await localApi.delete(`/posts/${id}`,)
+      const response = await localApi.delete(`/posts/${id}`);
 
-      return response.data
+      return response.data;
     },
     onSuccess: () => {
-      refetch()
-    }
-  })
+      refetch();
+    },
+  });
 
-  return  <button
-  className={clsx("btn btn-error", deletePostMutation.isLoading ? "loading" : null)}
-  disabled={deletePostMutation.isLoading}
-  onClick={() => deletePostMutation.mutate()}
->
-  Delete Post
-</button>
-}
+  return (
+    <button
+      className={clsx(
+        "btn-error btn",
+        deletePostMutation.isLoading ? "loading" : null
+      )}
+      disabled={deletePostMutation.isLoading}
+      onClick={() => deletePostMutation.mutate()}
+    >
+      Delete Post
+    </button>
+  );
+};
 
 const PostsPage: FC = () => {
-  const {data:currentUserData} = useCurrentUser()
+  const { data: currentUserData } = useCurrentUser();
 
   const { data } = usePosts();
 
-  const isAdmin = currentUserData?.roles?.includes("Admin")
-  const isUser = currentUserData?.roles?.includes("User")
+  const isAdmin = currentUserData?.roles?.includes("Admin");
+  const isUser = currentUserData?.roles?.includes("User");
 
   return (
     <div>
@@ -70,9 +75,7 @@ const PostsPage: FC = () => {
               <th>ID</th>
               <th>Title</th>
               <th>User</th>
-              {
-(isAdmin || isUser) && <th>Delete</th>
-              }
+              {(isAdmin || isUser) && <th>Delete</th>}
             </tr>
           </thead>
 
@@ -92,9 +95,14 @@ const PostsPage: FC = () => {
                   <UserDisplay id={item.userId} />
                 </td>
 
-                {(isAdmin || isUser) && <td>
-                  {(isAdmin || (isUser && item.userId === currentUserData?.id)) && <DeletePostButton id={item.id} /> }
-                  </td>}
+                {(isAdmin || isUser) && (
+                  <td>
+                    {(isAdmin ||
+                      (isUser && item.userId === currentUserData?.id)) && (
+                      <DeletePostButton id={item.id} />
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
