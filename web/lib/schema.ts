@@ -20,3 +20,9 @@ export const LoginSchema = z.object({
   password: z.string().min(5, { message: "Required" }),
 });
 export type LoginInput = z.infer<typeof LoginSchema>;
+
+export const PostSchema = z.object({
+  title: z.string().min(10, { message: "Required" }),
+  content: z.string().min(50, { message: "Required" }),
+});
+export type PostInput = z.infer<typeof PostSchema>;

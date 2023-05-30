@@ -12,12 +12,15 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <header className="container p-4">
-        <nav>
+        <nav className="flex flex-row items-center justify-between gap-4">
           <ul className="flex flex-row items-center gap-2">
             {data ? (
               <>
                 <li>
                   <Link href="/users">Users</Link>
+                </li>
+                <li>
+                  <Link href="/posts">Posts</Link>
                 </li>
               </>
             ) : (
@@ -31,6 +34,10 @@ const Layout: FC<LayoutProps> = ({ children }) => {
               </>
             )}
           </ul>
+
+          {data?.roles?.includes("User") && (
+            <Link href="/posts/create">Create Post</Link>
+          )}
         </nav>
 
         <hr className="my-2" />

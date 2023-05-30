@@ -1,10 +1,9 @@
 import useToken from "./useToken.hook";
-import type { User } from "~/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { destroyCookie } from "nookies";
-import { externalApi } from "~/lib/api";
 import { TOKEN_KEY } from "~/lib/constants";
+import { validateToken } from "~/services/auth";
 
 const useCurrentUser = () => {
   const [token] = useToken();
@@ -12,19 +11,7 @@ const useCurrentUser = () => {
   const query = useQuery({
     queryKey: ["user", "current", { token }],
     queryFn: async () => {
-      const response = await externalApi.post<User>(
-        "/Account/ValidateToken",
-        {
-          token,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return response.data;
+      return await validateToken(token);
     },
     enabled: !!token,
   });
