@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UserWord\**" />
+    <Compile Remove="Word\**" />
+    <EmbeddedResource Remove="UserWord\**" />
+    <EmbeddedResource Remove="Word\**" />
+    <None Remove="UserWord\**" />
+    <None Remove="Word\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Subscription.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SSLE.Auth.Data.Contract\SSLE.Auth.Contract.csproj" />
+  </ItemGroup>
+
+</Project>

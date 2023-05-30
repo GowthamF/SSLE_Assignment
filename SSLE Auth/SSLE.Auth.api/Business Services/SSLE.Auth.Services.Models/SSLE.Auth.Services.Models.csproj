@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UserWord\**" />
+    <Compile Remove="Word\**" />
+    <EmbeddedResource Remove="UserWord\**" />
+    <EmbeddedResource Remove="Word\**" />
+    <None Remove="UserWord\**" />
+    <None Remove="Word\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SubscriptionModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+  </ItemGroup>
+
+</Project>

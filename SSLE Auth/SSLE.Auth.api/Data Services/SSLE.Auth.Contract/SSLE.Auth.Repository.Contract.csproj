@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ISubscriptionRepository.cs" />
+    <Compile Remove="IUserWordsRepository.cs" />
+    <Compile Remove="IWordOfTheDayRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business Services\SSLE.Auth.Services.Models\SSLE.Auth.Services.Models.csproj" />
+    <ProjectReference Include="..\..\Shared\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Data.Contract\SSLE.Auth.Contract.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Data\SSLE.Auth.Data.csproj" />
+  </ItemGroup>
+
+</Project>

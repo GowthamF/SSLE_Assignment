@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MapProfile.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business Services\SSLE.Auth.Services.Contract\SSLE.Auth.Services.Contract.csproj" />
+    <ProjectReference Include="..\..\Business Services\SSLE.Auth.Services\SSLE.Auth.Services.csproj" />
+    <ProjectReference Include="..\..\Data Services\SSLE.Auth.Contract\SSLE.Auth.Repository.Contract.csproj" />
+    <ProjectReference Include="..\..\Data Services\SSLE.Auth.Data\SSLE.Auth.Data.csproj" />
+    <ProjectReference Include="..\..\Data Services\SSLE.Auth.Repository\SSLE.Auth.Repository.csproj" />
+    <ProjectReference Include="..\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+  </ItemGroup>
+
+</Project>

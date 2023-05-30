@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a75fa9a5-c37e-4c59-9144-f4f0a30f4b35</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\Local\**" />
+    <Compile Remove="Models\Enums\**" />
+    <Compile Remove="Models\UserWord\**" />
+    <Content Remove="Controllers\Local\**" />
+    <Content Remove="Models\Enums\**" />
+    <Content Remove="Models\UserWord\**" />
+    <EmbeddedResource Remove="Controllers\Local\**" />
+    <EmbeddedResource Remove="Models\Enums\**" />
+    <EmbeddedResource Remove="Models\UserWord\**" />
+    <None Remove="Controllers\Local\**" />
+    <None Remove="Models\Enums\**" />
+    <None Remove="Models\UserWord\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\SubscriptionController.cs" />
+    <Compile Remove="Models\AdjectiveModel.cs" />
+    <Compile Remove="Models\EnrollSubscriptionRequestModel.cs" />
+    <Compile Remove="Models\ImageModel.cs" />
+    <Compile Remove="Models\NounModel.cs" />
+    <Compile Remove="Models\SubscriptionModel.cs" />
+    <Compile Remove="Models\UserProfileInfoModel.cs" />
+    <Compile Remove="Models\VerbModel.cs" />
+    <Compile Remove="Models\VideoModel.cs" />
+    <Compile Remove="Models\WordOfTheDayModel.cs" />
+    <Compile Remove="Models\WordOfTheDayRequestModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Instagram" Version="6.0.11" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+	   <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.3" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business Services\SSLE.Auth.Services.Contract\SSLE.Auth.Services.Contract.csproj" />
+    <ProjectReference Include="..\Business Services\SSLE.Auth.Services.Models\SSLE.Auth.Services.Models.csproj" />
+    <ProjectReference Include="..\Business Services\SSLE.Auth.Services\SSLE.Auth.Services.csproj" />
+    <ProjectReference Include="..\Shared\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+    <ProjectReference Include="..\Shared\SSLE.Auth.Ioc\SSLE.Auth.Ioc.csproj" />
+  </ItemGroup>
+
+</Project>

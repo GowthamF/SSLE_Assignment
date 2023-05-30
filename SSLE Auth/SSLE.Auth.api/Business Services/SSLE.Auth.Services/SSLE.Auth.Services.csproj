@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Local\**" />
+    <EmbeddedResource Remove="Local\**" />
+    <None Remove="Local\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SubscriptionService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data Services\SSLE.Auth.Contract\SSLE.Auth.Repository.Contract.csproj" />
+    <ProjectReference Include="..\..\Shared\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Services.Contract\SSLE.Auth.Services.Contract.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Services.Models\SSLE.Auth.Services.Models.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="SubscriptionRepository.cs" />
+    <Compile Remove="UserWordsRepository.cs" />
+    <Compile Remove="WordOfTheDayRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business Services\SSLE.Auth.Services.Contract\SSLE.Auth.Services.Contract.csproj" />
+    <ProjectReference Include="..\..\Business Services\SSLE.Auth.Services\SSLE.Auth.Services.csproj" />
+    <ProjectReference Include="..\..\Shared\SSLE..Auth.Common\SSLE.Auth.Common.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Contract\SSLE.Auth.Repository.Contract.csproj" />
+    <ProjectReference Include="..\SSLE.Auth.Data\SSLE.Auth.Data.csproj" />
+  </ItemGroup>
+
+</Project>
