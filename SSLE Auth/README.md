@@ -1,1 +1,1 @@
-# AECS-ShipFast
+# SSLE Auth service
