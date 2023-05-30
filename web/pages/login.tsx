@@ -1,6 +1,5 @@
 import clsx from "clsx";
-import api from "~/lib/api";
-import useAuthStore from "~/hooks/useAuthStore.hook";
+import useToken from "~/hooks/useToken.hook";
 import Head from "next/head";
 import type { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,22 +7,20 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { LoginSchema, type LoginInput } from "~/lib/schema";
+import { login } from "~/services/auth";
 
 const LoginPage: FC = () => {
   const router = useRouter();
-  const { setIsAuth } = useAuthStore((state) => state.actions);
+  const [token, setToken] = useToken();
 
   const loginMutation = useMutation({
     mutationFn: async (formData: LoginInput) => {
-      const loginResponse = await api.post<boolean>("/auth/login", {
-        username: formData.username,
-        password: formData.password,
-      });
-
-      return loginResponse.data;
+      return await login(formData.username, formData.password);
     },
-    onSuccess: () => {
-      setIsAuth(true);
+    onSuccess: (data) => {
+      setToken(data.token, {
+        days: 7,
+      });
       router.replace("/");
     },
   });

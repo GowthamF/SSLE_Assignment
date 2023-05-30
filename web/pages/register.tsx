@@ -1,31 +1,46 @@
 import clsx from "clsx";
-import api from "~/lib/api";
-import useAuthStore from "~/hooks/useAuthStore.hook";
+import useToken from "~/hooks/useToken.hook";
 import Head from "next/head";
 import type { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { RegisterSchema, type RegisterInput } from "~/lib/schema";
+import { RegisterSchema, type RegisterInput, Roles } from "~/lib/schema";
+import { externalApi } from "~/lib/api";
+import { login } from "~/services/auth";
 
 const RegisterPage: FC = () => {
   const router = useRouter();
-  const { setIsAuth } = useAuthStore((state) => state.actions);
+  const [token, setToken] = useToken();
 
   const registerMutation = useMutation({
     mutationFn: async (formData: RegisterInput) => {
-      const registerResponse = await api.post<boolean>("/auth/register", {
-        email: formData.email,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        password: formData.password,
-      });
+      const registerResponse = await externalApi.post<boolean>(
+        "/Account/Register",
+        {
+          id: 0,
+          email: formData.email,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          password: formData.password,
+          profileImage:
+            "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg",
+          phoneNumber: "0123456789",
+          roles: [formData.role],
+        }
+      );
 
-      return registerResponse.data;
+      if (registerResponse.data) {
+        return await login(formData.email, formData.password);
+      } else {
+        throw new Error("Error registering user");
+      }
     },
-    onSuccess: () => {
-      setIsAuth(true);
+    onSuccess: (data) => {
+      setToken(data.token, {
+        days: 7,
+      });
       router.replace("/");
     },
   });
@@ -142,6 +157,33 @@ const RegisterPage: FC = () => {
             <label className="label">
               <span className="label-text-alt text-error">
                 {errors?.password?.message}
+              </span>
+            </label>
+          )}
+        </div>
+
+        <div className="form-control w-full max-w-xs">
+          <label className="label">
+            <span className="label-text">Role</span>
+          </label>
+
+          <select
+            {...register("role")}
+            className={clsx(
+              "input-bordered input w-full max-w-xs",
+              errors.password ? "input-error" : null
+            )}
+            disabled={registerMutation.isLoading}
+          >
+            <option value={Roles.User}>{Roles.User}</option>
+            <option value={Roles.Admin}>{Roles.Admin}</option>
+            <option value={Roles.SuperAdmin}>{Roles.SuperAdmin}</option>
+          </select>
+
+          {!!errors?.role && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors?.role?.message}
               </span>
             </label>
           )}

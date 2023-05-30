@@ -1,29 +1,29 @@
-import api from "~/lib/api";
-import useAuthStore from "~/hooks/useAuthStore.hook";
+import useToken from "~/hooks/useToken.hook";
 import Head from "next/head";
+import Link from "next/link";
 import type { FC } from "react";
-import type { User } from "~/prisma";
+import type { User } from "~/lib/types";
 import { useQuery } from "@tanstack/react-query";
-
-const sanitizeRole = (role: User["role"]) => {
-  if (role === "SuperAdmin") {
-    return "Super Admin";
-  }
-
-  return role;
-};
+import { externalApi } from "~/lib/api";
 
 const UsersPage: FC = () => {
-  const isAuth = useAuthStore((state) => state.isAuth);
+  const [token] = useToken();
+
   const { data } = useQuery({
-    queryKey: ["users", isAuth],
+    queryKey: ["users", { token }],
     queryFn: async () => {
-      const response = await api.get<Omit<User, "password">[]>("/user");
+      const response = await externalApi.get<Omit<User, "roles">[]>(
+        "/Account/GetUsers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     },
-    enabled: isAuth,
-    placeholderData: [],
+    enabled: !!token,
   });
 
   return (
@@ -40,18 +40,18 @@ const UsersPage: FC = () => {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
-              <th>Role</th>
             </tr>
           </thead>
 
           <tbody>
             {data?.map((item) => (
               <tr key={item.id}>
-                <td>{item.id}</td>
+                <td>
+                  <Link href={`/users/${item.id}`} className="underline underline-offset-4">{item.id}</Link>
+                </td>
                 <td>{item.firstName}</td>
                 <td>{item.lastName}</td>
                 <td>{item.email}</td>
-                <td>{sanitizeRole(item.role)}</td>
               </tr>
             ))}
           </tbody>
